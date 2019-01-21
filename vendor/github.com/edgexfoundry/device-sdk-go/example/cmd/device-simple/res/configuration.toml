@@ -1,0 +1,88 @@
+[Service]
+Host = "localhost"
+Port = 49990
+ConnectRetries = 3
+Labels = []
+OpenMsg = "device simple started"
+ReadMaxLimit = 256
+Timeout = 5000
+EnableAsyncReadings = true
+AsyncBufferSize = 16
+
+[Registry]
+Host = "localhost"
+Port = 8500
+CheckInterval = "10s"
+FailLimit = 3
+FailWaitTime = 10
+
+[Clients]
+  [Clients.Data]
+  Name = "edgex-core-data"
+  Protocol = "http"
+  Host = "localhost"
+  Port = 48080
+  Timeout = 5000
+
+  [Clients.Metadata]
+  Name = "edgex-core-metadata"
+  Protocol = "http"
+  Host = "localhost"
+  Port = 48081
+  Timeout = 5000
+
+  [Clients.Logging]
+  Name = "edgex-support-logging"
+  Protocol = "http"
+  Host = "localhost"
+  Port = 48061
+
+[Device]
+  DataTransform = true
+  InitCmd = ""
+  InitCmdArgs = ""
+  MaxCmdOps = 128
+  MaxCmdValueLen = 256
+  RemoveCmd = ""
+  RemoveCmdArgs = ""
+  ProfilesDir = "./res"
+
+[Logging]
+EnableRemote = false
+File = "./device-simple.log"
+Level = "DEBUG"
+
+# Pre-define Devices
+[[DeviceList]]
+  Name = "Simple-Device01"
+  Profile = "Simple-Device"
+  Description = "Example of Simple Device"
+  Labels = [ "industrial" ]
+  [DeviceList.Addressable]
+    Address = "simple01"
+    Port = 300
+    Protocol = "OTHER"
+
+# Pre-define Schedule Configuration
+[[Schedules]]
+Name = "10sec-schedule"
+Frequency = "PT10S"
+
+[[ScheduleEvents]]
+Name = "turnOnSwitch"
+Parameters = "[{\"Switch\": \"true\"}]"
+Schedule = "10sec-schedule"
+  [ScheduleEvents.Addressable]
+  HTTPMethod = "PUT"
+  Path = "/api/v1/device/name/Simple-Device01/Switch"
+
+[[Schedules]]
+Name = "5sec-schedule"
+Frequency = "PT5S"
+
+[[ScheduleEvents]]
+Name = "readSwtich"
+Schedule = "5sec-schedule"
+  [ScheduleEvents.Addressable]
+  HTTPMethod = "GET"
+  Path = "/api/v1/device/name/Simple-Device01/Switch"

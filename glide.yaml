@@ -1,0 +1,12 @@
+package: github.com/edgexfoundry/device-gpio-moist-go
+import:
+- package: github.com/edgexfoundry/device-sdk-go
+  version: delhi
+  subpackages:
+  - pkg/models
+- package: github.com/edgexfoundry/edgex-go
+  version: delhi
+  subpackages:
+  - /pkg/models
+  - /pkg/clients/logging
+- package: github.com/stianeikeland/go-rpio

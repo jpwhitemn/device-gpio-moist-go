@@ -1,0 +1,65 @@
+hash: e21d30e2655808acb4c11ca2a907c68b42c0c5bd14884867cf88bb6b73baf580
+updated: 2019-01-15T22:10:59.461985569-06:00
+imports:
+- name: github.com/armon/go-metrics
+  version: f0300d1749da6fa982027e449ec0c7a145510c3c
+- name: github.com/BurntSushi/toml
+  version: a368813c5e648fee92e5f6c30e3944ff9d5e8895
+- name: github.com/edgexfoundry/device-sdk-go
+  version: 58ceab4ca78d83c4ad32384cd9246de601e88c4e
+  subpackages:
+  - internal/cache
+  - internal/clients
+  - internal/common
+  - internal/config
+  - internal/controller
+  - internal/handler
+  - internal/provision
+  - internal/registry
+  - internal/scheduler
+  - internal/transformer
+  - pkg/models
+  - pkg/startup
+- name: github.com/edgexfoundry/edgex-go
+  version: 8affe72bf526090b5964633cf3c20f38c484b74d
+  subpackages:
+  - pkg/clients
+  - pkg/clients/coredata
+  - pkg/clients/logging
+  - pkg/clients/metadata
+  - pkg/clients/types
+  - pkg/models
+- name: github.com/gorilla/context
+  version: 51ce91d2eaddeca0ef29a71d766bb3634dadf729
+- name: github.com/gorilla/mux
+  version: e3702bed27f0d39777b0b37b664b6280e8ef8fbf
+- name: github.com/hashicorp/consul
+  version: 5174058f0d2bda63fa5198ab96c33d9a909c58ed
+  subpackages:
+  - api
+- name: github.com/hashicorp/go-cleanhttp
+  version: e8ab9daed8d1ddd2d3c4efba338fe2eeae2e4f18
+- name: github.com/hashicorp/go-immutable-radix
+  version: 27df80928bb34bb1b0d6d0e01b9e679902e7a6b5
+- name: github.com/hashicorp/go-rootcerts
+  version: 6bb64b370b90e7ef1fa532be9e591a81c3493e00
+- name: github.com/hashicorp/golang-lru
+  version: 20f1fb78b0740ba8c3cb143a61e86ba5c8669768
+  subpackages:
+  - simplelru
+- name: github.com/hashicorp/serf
+  version: 239fdb9f44a485dc18bdf99ae26a3e7548bc4a04
+  subpackages:
+  - coordinate
+- name: github.com/mitchellh/go-homedir
+  version: ae18d6b8b3205b561c79e8e5f69bff09736185f4
+- name: github.com/robfig/cron
+  version: b41be1df696709bb6395fe435af20370037c0b4c
+- name: gopkg.in/mgo.v2
+  version: 3f83fa5005286a7fe593b055f0d7771a7dce4655
+  subpackages:
+  - bson
+  - internal/json
+- name: gopkg.in/yaml.v2
+  version: eb3733d160e74a9c7e442f435eb3bea458e1d19f
+testImports: []

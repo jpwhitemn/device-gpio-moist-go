@@ -1,0 +1,39 @@
+name: "GPIO.Moist.Profile"
+manufacturer: "Dell Technologies"
+model: "DT1"
+labels:
+ - "GPIO"
+ - "moisture"
+description: "Moisture sensor via RP3 and GPIO pins"
+deviceResources:
+  -
+    name: MoistureState
+    description: "moisture state."
+    attributes:
+      { name: "state" }
+    properties:
+      value:
+        { type: "INT16", size: "4", readWrite: "R", minimum: "0", maximum: "1", defaultValue: "1"}
+      units:
+        { type: "String", readWrite: "R", defaultValue: "detected"}
+
+resources:
+  -
+    name: Moisture
+    get:
+      - { operation: "get", object: "MoistureState", parameter: "MoistureState", property: "value" }
+
+commands:
+  -
+    name: Moisture
+    get:
+      path: "/api/v1/device/{deviceId}/Moisture"
+      responses:
+        -
+          code: "200"
+          description: "Get the moisture state."
+          expectedValues: ["MoistureState"]
+        -
+          code: "503"
+          description: "service unavailable"
+          expectedValues: []
