@@ -9,11 +9,12 @@ package driver
 import (
 	"fmt"
 	"sync"
+	"time"
+
 	ds_models "github.com/edgexfoundry/device-sdk-go/pkg/models"
 	sdk "github.com/edgexfoundry/device-sdk-go/pkg/service"
 	"github.com/edgexfoundry/go-mod-core-contracts/clients/logger"
 	"github.com/edgexfoundry/go-mod-core-contracts/models"
-	"time"
 	rpio "github.com/stianeikeland/go-rpio"
 )
 
@@ -32,30 +33,14 @@ var once sync.Once
 var driver *GPIODriver
 var sdkService sdk.DeviceService
 
-func NewGPIODriver() ds_models.ProtocolDriver{
+func NewGPIODriver() ds_models.ProtocolDriver {
 	once.Do(func() {
 		driver = new(GPIODriver)
 	})
 	return driver
 }
 
-// RemoveDevice handles protocol-specific cleanup when a device is removed.
-func (s *GPIODriver) RemoveDevice (deviceName string, protocols map[string]models.ProtocolProperties) error  {
-	return nil
-}
-
-// AddDevice handles protocol specific init when a device is added
-func (d *GPIODriver) AddDevice(deviceName string, protocols map[string]models.ProtocolProperties, adminState models.AdminState) error {
-	return nil
-}
-
-// UpdateDevice handles protocol specific actions when a device is updated
-func (d *GPIODriver) UpdateDevice(deviceName string, protocols map[string]models.ProtocolProperties, adminState models.AdminState) error {
-	return nil
-}
-
-// Initialize performs protocol-specific initialization for the device
-// service.
+// Initialize performs protocol-specific initialization for the device service.
 func (s *GPIODriver) Initialize(lc logger.LoggingClient, asyncCh chan<- *ds_models.AsyncValues, deviceCh chan<- []ds_models.DiscoveredDevice) error {
 	s.lc = lc
 	s.asyncCh = asyncCh
@@ -77,7 +62,7 @@ func (s *GPIODriver) HandleReadCommands(deviceName string, protocols map[string]
 		s.lc.Error(fmt.Sprintf("GPIODriver.HandleReadCommands; %v", err))
 		return
 	}
-	
+
 	s.lc.Debug(fmt.Sprintf("Moisture detected value: ", val))
 
 	//cv, _ := ds_models.NewInt16Value(&reqs[0].RO, now, int16(val))
@@ -92,7 +77,6 @@ func (s *GPIODriver) HandleWriteCommands(deviceName string, protocols map[string
 
 	s.lc.Debug(fmt.Sprintf("GPIODriver.HandleWriteCommands not supported"))
 	return nil
-
 }
 
 // Stop the protocol-specific DS code to shutdown gracefully, or
@@ -101,6 +85,21 @@ func (s *GPIODriver) HandleWriteCommands(deviceName string, protocols map[string
 // readings (if supported).
 func (s *GPIODriver) Stop(force bool) error {
 	s.lc.Debug(fmt.Sprintf("GPIODriver.Stop called: force=%v", force))
+	return nil
+}
+
+// RemoveDevice handles protocol-specific cleanup when a device is removed.
+func (s *GPIODriver) RemoveDevice(deviceName string, protocols map[string]models.ProtocolProperties) error {
+	return nil
+}
+
+// AddDevice handles protocol specific init when a device is added
+func (d *GPIODriver) AddDevice(deviceName string, protocols map[string]models.ProtocolProperties, adminState models.AdminState) error {
+	return nil
+}
+
+// UpdateDevice handles protocol specific actions when a device is updated
+func (d *GPIODriver) UpdateDevice(deviceName string, protocols map[string]models.ProtocolProperties, adminState models.AdminState) error {
 	return nil
 }
 
@@ -116,7 +115,7 @@ func (s *GPIODriver) readPin() (result int, err error) {
 
 	// Pull up and read value
 	pin.PullUp()
-	st:= pin.Read()
+	st := pin.Read()
 	if st == rpio.Low {
 		s.lc.Debug(fmt.Sprintf("GPIODriver.readPin water detected"))
 		return 1, nil

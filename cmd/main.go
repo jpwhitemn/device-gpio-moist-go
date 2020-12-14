@@ -7,9 +7,9 @@
 package main
 
 import (
-	"github.com/edgexfoundry/device-sdk-go/pkg/startup"
+	device_gpio "github.com/edgexfoundry/device-gpio-moist-go"
 	"github.com/edgexfoundry/device-gpio-moist-go/internal/driver"
-	"github.com/edgexfoundry/device-gpio-moist-go"
+	"github.com/edgexfoundry/device-sdk-go/pkg/startup"
 )
 
 const (
@@ -18,5 +18,5 @@ const (
 
 func main() {
 	sd := driver.NewGPIODriver()
-	startup.Bootstrap(serviceName, device_gpio.Version, &sd)
+	startup.Bootstrap(serviceName, device_gpio.Version, sd)
 }
