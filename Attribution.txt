@@ -1,0 +1,8 @@
+Native library for accesing GPIO (MIT): github.com/stianeikeland/go-rpio
+github.com/stianeikeland/go-rpio
+
+edgexfoundry/go-mod-core-contracts (Apache 2.0) https://github.com/edgexfoundry/go-mod-core-contracts
+https://github.com/edgexfoundry/go-mod-core-contracts/blob/master/LICENSE
+
+edgexfoundry/device-sdk-go (Apache 2.0) https://github.com/edgexfoundry/device-sdk-go
+https://github.com/edgexfoundry/device-sdk-go/blob/master/LICENSE

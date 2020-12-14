@@ -1,6 +1,6 @@
 name: "GPIO.Moist.Profile"
-manufacturer: "Dell Technologies"
-model: "DT1"
+manufacturer: "IOTech Systems"
+model: "IOTech1"
 labels:
  - "GPIO"
  - "moisture"

@@ -53,10 +53,13 @@ File = ''
   
 # Pre-define Devices
 [[DeviceList]]
-  Name = "GPIOMoist1"
+  Name = "GPIOMoisture"
   Profile = "GPIO.Moist.Profile"
   Description = "GPIO Moisture sensor on a RP3"
-  Labels = [ "RP3", "GPIO", "test"]
+  Labels = [ "RP3", "GPIO", "moisture"]
+  [DeviceList.Protocols]
+    [DeviceList.Protocols.other]
+      Address = "/api/v1/device/gpio"
   [[DeviceList.AutoEvents]]
     Frequency = '10s'
     OnChange = false
