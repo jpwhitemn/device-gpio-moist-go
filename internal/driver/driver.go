@@ -1,6 +1,6 @@
 // -*- Mode: Go; indent-tabs-mode: t -*-
 //
-// Copyright (C) 2018-2019 Dell Technologies
+// Copyright (C) 2020 IOTech Ltd
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -8,9 +8,11 @@ package driver
 
 import (
 	"fmt"
+	"sync"
 	ds_models "github.com/edgexfoundry/device-sdk-go/pkg/models"
-	"github.com/edgexfoundry/edgex-go/pkg/clients/logging"
-	"github.com/edgexfoundry/edgex-go/pkg/models"
+	sdk "github.com/edgexfoundry/device-sdk-go/pkg/service"
+	"github.com/edgexfoundry/go-mod-core-contracts/clients/logger"
+	"github.com/edgexfoundry/go-mod-core-contracts/models"
 	"time"
 	rpio "github.com/stianeikeland/go-rpio"
 )
@@ -26,25 +28,46 @@ type GPIODriver struct {
 	switchButton bool
 }
 
-// DisconnectDevice handles protocol-specific cleanup when a device
-// is removed.
-func (s *GPIODriver) DisconnectDevice(address *models.Addressable) error {
+var once sync.Once
+var driver *GPIODriver
+var sdkService sdk.DeviceService
+
+func NewGPIODriver() ds_models.ProtocolDriver{
+	once.Do(func() {
+		driver = new(GPIODriver)
+	})
+	return driver
+}
+
+// RemoveDevice handles protocol-specific cleanup when a device is removed.
+func (s *GPIODriver) RemoveDevice (deviceName string, protocols map[string]models.ProtocolProperties) error  {
+	return nil
+}
+
+// AddDevice handles protocol specific init when a device is added
+func (d *GPIODriver) AddDevice(deviceName string, protocols map[string]models.ProtocolProperties, adminState models.AdminState) error {
+	return nil
+}
+
+// UpdateDevice handles protocol specific actions when a device is updated
+func (d *GPIODriver) UpdateDevice(deviceName string, protocols map[string]models.ProtocolProperties, adminState models.AdminState) error {
 	return nil
 }
 
 // Initialize performs protocol-specific initialization for the device
 // service.
-func (s *GPIODriver) Initialize(lc logger.LoggingClient, asyncCh chan<- *ds_models.AsyncValues) error {
+func (s *GPIODriver) Initialize(lc logger.LoggingClient, asyncCh chan<- *ds_models.AsyncValues, deviceCh chan<- []ds_models.DiscoveredDevice) error {
 	s.lc = lc
 	s.asyncCh = asyncCh
 	return nil
 }
 
 // HandleReadCommands triggers a protocol Read operation for the specified device.
-func (s *GPIODriver) HandleReadCommands(addr *models.Addressable, reqs []ds_models.CommandRequest) (res []*ds_models.CommandValue, err error) {
+func (s *GPIODriver) HandleReadCommands(deviceName string, protocols map[string]models.ProtocolProperties, reqs []ds_models.CommandRequest) (res []*ds_models.CommandValue, err error) {
 
 	for _, req := range reqs {
-		s.lc.Debug(fmt.Sprintf("GPIODriver.HandleReadCommand: device: %s operation: %v attributes: %v", addr.Name, req.RO.Operation, req.DeviceObject.Attributes))
+		//s.lc.Debug(fmt.Sprintf("GPIODriver.HandleReadCommand: device: %s operation: %v attributes: %v", addr.Name, req.RO.Operation, req.DeviceObject.Attributes))
+		s.lc.Debug(fmt.Sprintf("device: %v resource: %v attributes: %v", deviceName, req.DeviceResourceName, req.Attributes))
 	}
 
 	now := time.Now().UnixNano() / int64(time.Millisecond)
@@ -57,17 +80,14 @@ func (s *GPIODriver) HandleReadCommands(addr *models.Addressable, reqs []ds_mode
 	
 	s.lc.Debug(fmt.Sprintf("Moisture detected value: ", val))
 
-	cv, _ := ds_models.NewInt16Value(&reqs[0].RO, now, int16(val))
+	//cv, _ := ds_models.NewInt16Value(&reqs[0].RO, now, int16(val))
+	cv, _ := ds_models.NewInt16Value(reqs[0].DeviceResourceName, now, int16(val))
 	res = append(res, cv)
 
-	return
+	return res, nil
 }
 
-// HandleWriteCommands passes a slice of CommandRequest struct each representing
-// a ResourceOperation for a specific device resource (aka DeviceObject).
-// Since the commands are actuation commands, params provide parameters for the individual
-// command.
-func (s *GPIODriver) HandleWriteCommands(addr *models.Addressable, reqs []ds_models.CommandRequest,
+func (s *GPIODriver) HandleWriteCommands(deviceName string, protocols map[string]models.ProtocolProperties, reqs []ds_models.CommandRequest,
 	params []*ds_models.CommandValue) error {
 
 	s.lc.Debug(fmt.Sprintf("GPIODriver.HandleWriteCommands not supported"))

@@ -5,6 +5,7 @@ labels:
  - "GPIO"
  - "moisture"
 description: "Moisture sensor via RP3 and GPIO pins"
+
 deviceResources:
   -
     name: MoistureState
@@ -17,13 +18,13 @@ deviceResources:
       units:
         { type: "String", readWrite: "R", defaultValue: "detected"}
 
-resources:
+deviceCommands:
   -
     name: Moisture
     get:
-      - { operation: "get", object: "MoistureState", parameter: "MoistureState", property: "value" }
+      - { operation: "get", deviceResource: "MoistureState", parameter: "MoistureState", property: "value" }
 
-commands:
+coreCommands:
   -
     name: Moisture
     get:

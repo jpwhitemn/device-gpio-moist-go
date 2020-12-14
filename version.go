@@ -7,4 +7,4 @@
 package device_gpio
 
 // Global version for device-sdk-go
-const Version string = "1.0.0"
+var Version string = "to be replaced by makefile"
