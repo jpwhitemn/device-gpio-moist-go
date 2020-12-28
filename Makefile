@@ -8,7 +8,7 @@ MICROSERVICES=cmd/device-gpio-moist-go
 VERSION=$(shell cat ./VERSION 2>/dev/null || echo 0.0.0)
 
 GIT_SHA=$(shell git rev-parse HEAD)
-GOFLAGS=-ldflags "-X github.com/edgexfoundry/device-virtual-go.Version=$(VERSION)"
+GOFLAGS=-ldflags "-X github.com/edgexfoundry/device-gpio-moist-go.Version=$(VERSION)"
 
 build: $(MICROSERVICES)
 	$(GO) build ./...

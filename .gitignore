@@ -16,7 +16,7 @@
 
 .idea/
 vendor/
-cmd/device-gpio=moist-go
+cmd/device-gpio-moist-go
 glide.lock
 go.sum
 
